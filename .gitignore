@@ -1,0 +1,31 @@
+.log
+*.log
+.checkstyle
+*.*~
+*.retry
+*.cache
+
+generated/
+generated-wsdl/
+out/
+classes/
+
+# gradle
+.gradle
+build/
+dist/
+target/
+
+# idea
+*.iml
+*.ipr
+*.iws
+.idea/
+.ideaDataSources
+dataSources
+
+# dependencies
+node_modules
+
+# logs
+npm-debug.log
