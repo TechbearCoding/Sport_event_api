@@ -3,5 +3,5 @@ CREATE TABLE sport_event (
     name TEXT NOT NULL,
     sport TEXT NOT NULL,
     status TEXT NOT NULL,
-    start_time DATE NOT NULL,
+    start_time DATE NOT NULL
 );

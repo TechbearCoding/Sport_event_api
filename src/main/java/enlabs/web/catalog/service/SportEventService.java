@@ -1,5 +1,6 @@
 package enlabs.web.catalog.service;
 
+import enlabs.web.catalog.model.EventResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import enlabs.web.catalog.model.SportEvent;
@@ -24,5 +25,9 @@ public class SportEventService implements ISportEventService {
         List<SportEvent> sportEvents = sportEventRepository.findAll();
 
         return sportEvents;
+    }
+
+    public EventResponse createService(SportEvent event) {
+        return new EventResponse();
     }
 }
