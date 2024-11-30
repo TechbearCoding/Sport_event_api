@@ -16,18 +16,24 @@ import java.util.List;
 public class SportEventService implements ISportEventService {
 
 
-    @Autowired
     private SportEventRepository sportEventRepository;
+
+    @Autowired
+    public SportEventService(SportEventRepository sportEventRepository) {
+        this.sportEventRepository = sportEventRepository;
+    }
 
     @Override
     public List<SportEvent> getSportEvents(String sport, String status) {
 
-        List<SportEvent> sportEvents = sportEventRepository.findAll();
-
-        return sportEvents;
+        return sportEventRepository.findAll();
     }
 
-    public EventResponse createService(SportEvent event) {
-        return new EventResponse();
+    public SportEvent  createService(SportEvent event) {
+        return sportEventRepository.save(event);
+    }
+
+    public SportEvent getSportEventById(int id) {
+        return sportEventRepository.findById(id).orElse(null);
     }
 }

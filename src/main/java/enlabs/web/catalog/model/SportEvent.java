@@ -25,7 +25,7 @@ public class SportEvent {
     private String status;
 
     @Column(name = "start_time", nullable = false)
-    private LocalDateTime startTime;
+    private String startTime;
 
     public SportEvent() {
     }

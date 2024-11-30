@@ -35,8 +35,6 @@ public class DataSourceConfig {
         em.setJpaVendorAdapter(vendorAdapter);
 
         Properties additionalProperties = new Properties();
-//        additionalProperties.setProperty("hibernate.dialect", "org.hibernate.dialect:sqlite-dialect");
-//        additionalProperties.setProperty("hibernate.hbm2ddl.auto", "update");
         em.setJpaProperties(additionalProperties);
 
         return em;
