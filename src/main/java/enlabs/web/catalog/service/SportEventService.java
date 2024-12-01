@@ -8,6 +8,7 @@ import enlabs.web.catalog.repository.SportEventRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.persistence.EntityNotFoundException;
 import java.util.List;
 
 @Slf4j
@@ -25,8 +26,10 @@ public class SportEventService implements ISportEventService {
 
     @Override
     public List<SportEvent> getSportEvents(String sport, String status) {
-
-        return sportEventRepository.findAll();
+        return sportEventRepository.findFilteredEvents(
+                sport.isEmpty() ? null : sport,
+                status.isEmpty() ? null : status
+        );
     }
 
     public SportEvent  createService(SportEvent event) {
@@ -34,6 +37,17 @@ public class SportEventService implements ISportEventService {
     }
 
     public SportEvent getSportEventById(int id) {
-        return sportEventRepository.findById(id).orElse(null);
+        return sportEventRepository.findById(id).
+                orElseThrow(() -> new EntityNotFoundException("SportEvent not found with ID: " + id));
+    }
+
+    public void updateSportEventStatus(Long id, String status) {
+        SportEvent event = sportEventRepository.findById(id).
+                orElseThrow(() -> new EntityNotFoundException("SportEvent not found with ID: " + id));
+
+        if(event != null) {
+            event.setStatus(status);
+            sportEventRepository.save(event);
+        }
     }
 }
