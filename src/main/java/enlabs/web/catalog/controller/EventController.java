@@ -58,7 +58,7 @@ class EventController {
     @PutMapping("/{id}/status")
     @Operation(summary = "Update sport event status", description = "Update the status of a specific sport event")
     public ResponseEntity<String> updateEventStatus(
-            @PathVariable Long id,
+            @PathVariable int id,
             @RequestParam String status) {
         try{
             service.updateSportEventStatus(id, status);

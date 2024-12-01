@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 import javax.persistence.EntityNotFoundException;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 @Slf4j
@@ -49,12 +50,12 @@ public class SportEventService implements ISportEventService {
                 orElseThrow(() -> new EntityNotFoundException("SportEvent not found with ID: " + id));
     }
 
-    public void updateSportEventStatus(Long id, String status) {
+    public void updateSportEventStatus(int id, String status) {
         SportEvent event = sportEventRepository.findById(id).
                 orElseThrow(() -> new EntityNotFoundException("SportEvent not found with ID: " + id));
 
         String currentStatus = event.getStatus();
-        LocalDateTime startTime = LocalDateTime.parse(event.getStartTime());
+        LocalDateTime startTime = LocalDateTime.parse(event.getStartTime(), DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
 
         if (currentStatus.equals("Finished")) {
             throw new IllegalArgumentException("Cannot change status from 'Finished' to any other status.");

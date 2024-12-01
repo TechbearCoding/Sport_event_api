@@ -8,5 +8,5 @@ public interface ISportEventService {
     List<SportEvent> getSportEvents(String sport, String status);
     SportEvent createService(SportEvent event);
     SportEvent getSportEventById(int id);
-    void updateSportEventStatus(Long id, String status);
+    void updateSportEventStatus(int id, String status);
 }

@@ -10,8 +10,8 @@ import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
-public interface SportEventRepository extends JpaRepository<SportEvent, Long>, JpaSpecificationExecutor<SportEvent> {
-    Optional<SportEvent> findById(long id);
+public interface SportEventRepository extends JpaRepository<SportEvent, Integer>, JpaSpecificationExecutor<SportEvent> {
+    Optional<SportEvent> findById(int id);
 
     @Query("SELECT e FROM SportEvent e " +
             "WHERE (:sport IS NULL OR LOWER(e.sport) = LOWER(:sport)) " +
