@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.persistence.EntityNotFoundException;
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Slf4j
@@ -45,9 +46,27 @@ public class SportEventService implements ISportEventService {
         SportEvent event = sportEventRepository.findById(id).
                 orElseThrow(() -> new EntityNotFoundException("SportEvent not found with ID: " + id));
 
-        if(event != null) {
-            event.setStatus(status);
-            sportEventRepository.save(event);
+        String currentStatus = event.getStatus();
+        LocalDateTime startTime = LocalDateTime.parse(event.getStartTime());
+
+        if (currentStatus.equals("Finished")) {
+            throw new IllegalArgumentException("Cannot change status from 'Finished' to any other status.");
         }
+        if (currentStatus.equals("Inactive") && status.equals("Finished")) {
+            throw new IllegalArgumentException("Cannot change status from 'Inactive' to 'Finished'.");
+        }
+        if (status.equals("Active") && startTime.isBefore(LocalDateTime.now())) {
+            throw new IllegalArgumentException("Cannot activate an event if the start time is in the past.");
+        }
+        if (currentStatus.equals("Inactive") && !status.equals("Active")) {
+            throw new IllegalArgumentException("Can only change status from 'Inactive' to 'Active'.");
+        }
+        if (currentStatus.equals("Active") && !status.equals("Finished")) {
+            throw new IllegalArgumentException("Can only change status from 'Active' to 'Finished'.");
+        }
+
+        event.setStatus(status);
+        sportEventRepository.save(event);
+
     }
 }
