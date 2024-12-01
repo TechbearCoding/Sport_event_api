@@ -1,5 +1,6 @@
 package enlabs.web.catalog.controller;
 
+import enlabs.web.catalog.model.EventResponse;
 import enlabs.web.catalog.model.SportEvent;
 import enlabs.web.catalog.service.SportEventService;
 import lombok.Data;
@@ -11,6 +12,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.persistence.EntityNotFoundException;
+import java.time.DateTimeException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -23,11 +25,11 @@ class EventController {
 
     @GetMapping
     @Operation(summary = "Get all events", description = "Retrieve a list of all events")
-    public sportEventsResponse getEvents(
+    public EventResponse getEvents(
             @RequestParam(required = false, defaultValue = "") String sport,
             @RequestParam(required = false, defaultValue = "") String status) {
         List<SportEvent> filteredEvents = service.getSportEvents(sport, status);
-        return new sportEventsResponse()
+        return new EventResponse()
                 .setItems(new ArrayList<>(filteredEvents));
     }
 
@@ -44,8 +46,13 @@ class EventController {
 
     @PostMapping("/createEvent")
     @Operation(summary = "Create a new event", description = "Create a new sports event")
-    public SportEvent createSport(@RequestBody SportEvent event) {
-        return service.createService(event);
+    public ResponseEntity<SportEvent> createSport(@RequestBody SportEvent event) {
+        try{
+            SportEvent createdEvent = service.createService(event);
+            return ResponseEntity.status(HttpStatus.CREATED).body(createdEvent);
+        }catch(DateTimeException e){
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
+        }
     }
 
     @PutMapping("/{id}/status")
@@ -58,14 +65,10 @@ class EventController {
             return ResponseEntity.ok("Status updated successfully");
         } catch (EntityNotFoundException ex) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+        }catch(IllegalArgumentException ex){
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
         }
 
-    }
-
-    @Data
-    @Accessors(chain = true)
-    public static class sportEventsResponse {
-        private List<SportEvent> items;
     }
 
 }

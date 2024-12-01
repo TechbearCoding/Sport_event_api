@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 
 import javax.persistence.EntityNotFoundException;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.List;
 
 @Slf4j
@@ -34,6 +35,12 @@ public class SportEventService implements ISportEventService {
     }
 
     public SportEvent  createService(SportEvent event) {
+        LocalDateTime startTime = LocalDateTime.parse(event.getStartTime());
+        if (startTime.toLocalTime().equals(LocalTime.MIN)) {
+            startTime = startTime.with(LocalTime.MIDNIGHT);
+            event.setStartTime(String.valueOf(startTime));
+        }
+
         return sportEventRepository.save(event);
     }
 
@@ -67,6 +74,5 @@ public class SportEventService implements ISportEventService {
 
         event.setStatus(status);
         sportEventRepository.save(event);
-
     }
 }
