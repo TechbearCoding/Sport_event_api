@@ -11,13 +11,19 @@ apply plugin: 'java'
 apply plugin: "io.spring.dependency-management"
 apply plugin: "org.springframework.boot"
 
-sourceCompatibility = 11
+
+sourceCompatibility = 18
 
 allprojects {
     group "enlabs"
+    apply plugin: 'java'
     repositories {
         mavenCentral()
     }
+}
+
+tasks.test{
+    useJUnitPlatform()
 }
 
 dependencies {
@@ -35,6 +41,12 @@ dependencies {
     implementation 'javax.persistence:javax.persistence-api:2.2'
 
     implementation group: 'org.springdoc', name: 'springdoc-openapi-ui', version: '1.8.0'
+
+    testImplementation 'org.springframework.boot:spring-boot-starter-test'
+    testImplementation 'org.mockito:mockito-core'
+    testImplementation 'org.mockito:mockito-junit-jupiter'
+    testImplementation 'com.jayway.jsonpath:json-path'
+    testImplementation 'org.assertj:assertj-core'
 
 }
 

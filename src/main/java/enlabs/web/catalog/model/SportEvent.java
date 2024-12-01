@@ -29,4 +29,12 @@ public class SportEvent {
 
     public SportEvent() {
     }
+
+    public SportEvent(int id, String name, String sport, String status, String startTime) {
+        this.id = id;
+        this.name = name;
+        this.sport = sport;
+        this.status = status;
+        this.startTime = startTime;
+    }
 }
